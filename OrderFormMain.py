@@ -1,4 +1,4 @@
-# Program: Lesson 3a Order Form
+# Program: Lesson 6 Order Form
 # Programmer: Gordon Clark
 # Date: Oct 10, 2016
 # Program purpose: The programs purpose is to list total cost of a given number of items.
@@ -7,12 +7,12 @@
 # Variable Definitions
 import locale
 locale.setlocale ( locale.LC_ALL, '')
-username = 'Meatbag'
-item_cnt = int(0)  # Item Counter
+item_cnt = int(0)  # Item Counter for current item
 order_total = float(0.0)  # total for the order
 item_price = float(3.5)
 valid_data = False
 item_total = 0
+order_cnt = 0  # Running total for how many boxes for entire order
 # End of variable definitions
 
 username = input("What is your name? ")
@@ -71,13 +71,13 @@ while cont.lower() == 'y':
             else:
                 print("Calm down buddy you don't need THAT many cookies.")
 
-            ## ITEM TOTAL + FORMAT ##
-            item_total = item_cnt * item_price
-            fmt_total = locale.currency(item_total, grouping=True)
-            ## END ITEM TOTAL + FORMAT ##
     ## END REQUEST AMOUNT ##
 
     ## DETERMINE COOKIE TYPE + PRINT ##
+        ## ITEM TOTAL + FORMAT ##
+    item_total = item_cnt * item_price
+    fmt_total = locale.currency(item_total, grouping=True)
+        ## END ITEM TOTAL + FORMAT ##
     if item == '1':
         name = "Savannah"
     elif item == '2':
@@ -101,31 +101,32 @@ while cont.lower() == 'y':
             print()
 
         except Exception as detail:
-            print("error: ", detail)
+            print("Ya goofed: ", detail)
 
         else:
             if incl.lower() == 'y':
                 order_total += item_total
-                item_cnt += 1
+                order_cnt += item_cnt
                 valid_data = True
                 print("{} was added to your order.".format(name))
             elif incl.lower() == 'n':
                 print("{} was not added to your total.".format(name))
                 valid_data = True
             else:
-                print("what? WHAT? I CANT UNDERSTAND YOU!")
+                print("What? WHAT? I CANT UNDERSTAND YOU!")
             print()
     ## END INPUT CONFIRMATION ##
+
     try:
         cont = ""
         while cont.lower() != 'y' and cont.lower() != 'n':
-            cont = input("Would you like to add another order?")
+            cont = input("Would you like to add another order?(y/n) ")
     except Exception as detail:
         print("error: ", detail)
 ## END MAIN LOOP ##
 
 ## FINAL SALE DISPLAY ##
-fmt_total = locale.currency(item_total, grouping=True)
-print("You have ordered {} items costing {}".format(item_cnt, fmt_total))
-print("Thank you for using this program. Press any key to exit.")
+fmt_total = locale.currency(order_total, grouping=True)
+print("You have ordered {} items costing {}".format(order_cnt, fmt_total))
+print("Thank you for using this program {}.".format(username))
 ## END FINAL SALE DISPLAY ##
