@@ -4,25 +4,25 @@
 # Program purpose: The programs purpose is to list total cost of a given number of items.
 
 
-# Variable Definitions
+# Imports
 import locale
-locale.setlocale ( locale.LC_ALL, '')
-item_cnt = int(0)  # Item Counter for current item
-order_total = float(0.0)  # total for the order
-item_price = float(3.5)
-valid_data = False
+locale.setlocale(locale.LC_ALL, '')
+
+# Variables
+item_price = float(3.5)  # STATIC FOR NOW
 item_total = 0
+order_total = float(0.0)  # total for the entire order
+item_cnt = int(0)  # Item Counter for current item
 order_cnt = 0  # Running total for how many boxes for entire order
-# End of variable definitions
-
-username = input("What is your name? ")
+valid_data = False
 
 
-## MAIN LOOP REQUEST ##
-cont = "" 
+# Main Loop Init
+cont = ""
 while cont.lower() != 'y' and cont.lower() != 'n':
     cont = input('Would you like to place an order? (y/n)')
-## END MAIN LOOP REQUEST ##
+    username = input("What is your name? ")
+
 
 
 ## MAIN LOOP ##
@@ -31,8 +31,8 @@ while cont.lower() == 'y':
     # valid_data acts as a sentinel for the next sub-loop within the main loop. It must be set to
     # true to go to the next loop
     valid_data = False
-    
-    while not valid_data:
+
+    while not valid_data:  # Lists flavors for selection
         print("Please choose one of our flavors. Enter the item number to make a selection.")
         print("Number\tFlavor")
         print("1.\tSavannahs")
@@ -41,12 +41,12 @@ while cont.lower() == 'y':
         print()
 
         try:
-            item = input("Enter item number>")  # Hint: item resolves to a string, not an INT.
+            item = input("Enter item number>")  # Hint: item resolves to a string
 
-        except Exception as inst:
+        except Exception as inst:  # Grabs all exceptions and prints them
             print("error: ", inst)
 
-        else:
+        else:  # Runs if the try statement runs without throwing an exception
             if item == '1' or item == '2' or item == '3':  # item must be a string, or converted to a string
                 valid_data = True
             else:
@@ -57,8 +57,7 @@ while cont.lower() == 'y':
     # Flag reset
     valid_data = False
 
-    ## REQUEST AMOUNT ##
-    while not valid_data:
+    while not valid_data:  # Asking the user how many cookies they want within a range in the else statement
         try:
             item_cnt = int(input("How many would you like? "))
 
@@ -66,18 +65,16 @@ while cont.lower() == 'y':
             print("error: ", inst)
 
         else:
-            if 1 <= item_cnt <= 10:
+            if 1 <= item_cnt <= 10:  # Users cannot order more than 10 boxes of a single type
                 valid_data = True
             else:
                 print("Calm down buddy you don't need THAT many cookies.")
+    # End of loop
 
-    ## END REQUEST AMOUNT ##
+    item_total = item_cnt * item_price  # Calculates total price for current item and amount
+    fmt_total = locale.currency(item_total, grouping=True)  # Formats the item total
 
-    ## DETERMINE COOKIE TYPE + PRINT ##
-        ## ITEM TOTAL + FORMAT ##
-    item_total = item_cnt * item_price
-    fmt_total = locale.currency(item_total, grouping=True)
-        ## END ITEM TOTAL + FORMAT ##
+    # Checks input choice
     if item == '1':
         name = "Savannah"
     elif item == '2':
@@ -87,9 +84,9 @@ while cont.lower() == 'y':
 
     print("Order for {}.".format(username))
     print("Item\tPrice\tQty\tTotal")
-    print("\n{}    {}    {}   {}".format(name,item_price,item_cnt,fmt_total))
+    print("\n{}    {}    {}   {}".format(name, item_price, item_cnt, fmt_total))
     print()
-    ## END DETERMINE COOKIE TYPE + PRINT ##
+
 
     # Flag Reset
     valid_data = False
@@ -123,6 +120,7 @@ while cont.lower() == 'y':
             cont = input("Would you like to add another order?(y/n) ")
     except Exception as detail:
         print("error: ", detail)
+
 ## END MAIN LOOP ##
 
 ## FINAL SALE DISPLAY ##
